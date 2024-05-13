@@ -49,25 +49,25 @@ module.exports = (eleventyConfig, options) => {
 		bgGradientDef = `<linearGradient id="bg-gradient" x1="0" y1="0" x2="1" y2="1">${colStops}</linearGradient>`;
 	}
 
-	eleventyConfig.addAsyncShortcode("GenerateSocialImage", async (title) => {
+	eleventyConfig.addShortcode("GenerateSocialImage", async function (title, config = {} ) {
 		if (!title) return '';
 
 		return await genSocialImage(
-			eleventyConfig.javascriptFunctions.slug(title),		// file-name
-			title,												// title
-			siteName,											// site-name
-			promoImage,											// promo-image
-			{													// options
+			eleventyConfig.javascriptFunctions.slug(title),	// file-name
+			title,																					// title
+			config.siteName ?? siteName,										// site-name
+			config.promoImage ?? promoImage,								// promo-image
+			{																								// options
 				targetDir,
 				urlPath,
-				titleColor,
-				hideTerminal,
-				bgColor,
+				titleColor: config.titleColor ?? titleColor,
+				hideTerminal: config.hideTerminal ?? hideTerminal,
+				bgColor: config.bgColor ?? bgColor,
 				bgGradientDef,
-				terminalBgColor,
-				customSVG,
-				customFontFilename,
-				lineBreakAt
+				terminalBgColor: config.terminalBgColor ?? terminalBgColor,
+				customSVG: config.customSVG ?? customSVG,
+				customFontFilename: config.customFontFilename ?? customFontFilename,
+				lineBreakAt: config.lineBreakAt ?? lineBreakAt
 			}
 		);
 	});
